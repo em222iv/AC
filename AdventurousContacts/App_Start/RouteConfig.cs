@@ -14,9 +14,15 @@ namespace AdventurousContacts
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
+                name: "Index",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "contact", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                "404-PageNotFound",
+                "{controller}/{action}",
+                new { controller = "Shared", action = "_errorPage" }
             );
         }
     }

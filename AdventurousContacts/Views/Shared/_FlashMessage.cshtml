@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Flash";
+}
+
+@if (TempData["success"] != null)
+{
+    
+    <div class="alert-success">
+        <a href="" class="close"></a>
+        @TempData["success"]
+    </div>
+    
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert-danger">
+        <a href="" class="close"></a>
+        @TempData["error"]
+    </div>
+
+}

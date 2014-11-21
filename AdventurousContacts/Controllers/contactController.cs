@@ -14,7 +14,7 @@ namespace AdventurousContacts.Models
     {
          private IRepository _repository;
 
-         public contactController() : this(new EFRepository()) { }
+        public contactController() : this(new EFRepository()) { }
 
         public contactController(IRepository repository)
         {
@@ -44,7 +44,7 @@ namespace AdventurousContacts.Models
         // POST: /contact/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FirstName,LastName,EmailAddress")]Contact contact)
+        public ActionResult Create([Bind(Include = "ContactID,FirstName,LastName,EmailAddress")]Contact contact)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace AdventurousContacts.Models
             return View(contact);
         }
         //
-        // GET: /contact/Edit/5
+        // GET: /contact/Edit/
 
         public ActionResult Edit(int? id)
         {
@@ -76,12 +76,13 @@ namespace AdventurousContacts.Models
             Contact contact = _repository.GetContactsById(id.Value);
             if (contact == null)
             {
-                return HttpNotFound();
+                TempData["error"] = "Misslyckades att spara ändringarna. Försök igen, och kvarstår problemet kontakta systemadministratören.";
+                return RedirectToAction("Index");
             }
 
             return View(contact);
         }
-        // POST: /Birthday/Edit/42
+        // POST: /contact/Edit/
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult EditPost(int id)
@@ -90,7 +91,8 @@ namespace AdventurousContacts.Models
 
             if (contactToUpdate == null)
             {
-                return HttpNotFound();
+                TempData["error"] = "Misslyckades att spara ändringarna. Försök igen, och kvarstår problemet kontakta systemadministratören.";
+                return RedirectToAction("Index");
             }
 
             if (TryUpdateModel(contactToUpdate, String.Empty, new string[] { "FirstName","LastName","EmailAddress" }))
@@ -105,12 +107,13 @@ namespace AdventurousContacts.Models
                 catch (DataException)
                 {
                     TempData["error"] = "Misslyckades att spara ändringarna. Försök igen, och kvarstår problemet kontakta systemadministratören.";
+                    return RedirectToAction("Edit", new { id = id });
                 }
             }
 
             return View(contactToUpdate);
         }
-        // GET: /Birthday/Delete/42
+        // GET: /contect/Delete/
         public ActionResult Delete(int? id)
         {
             if (!id.HasValue)
@@ -128,7 +131,7 @@ namespace AdventurousContacts.Models
         }
 
         //
-        // POST: /contact/Delete/5
+        // POST: /contact/Delete/
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -149,11 +152,29 @@ namespace AdventurousContacts.Models
 
             return RedirectToAction("Index");
         }
-
+        //
+        // POST: /contact/Details/
         protected override void Dispose(bool disposing)
         {
             _repository.Dispose();
             base.Dispose(disposing);
+        }
+
+        public ActionResult Details(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Contact contact = _repository.GetContactsById(id.Value);
+            if (contact == null)
+            {
+                TempData["error"] = "Kontakten finns inte.";
+                return RedirectToAction("Index");
+            }
+
+            return View(contact);
         }
     }
 }

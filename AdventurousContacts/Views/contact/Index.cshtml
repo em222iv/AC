@@ -1,19 +1,29 @@
 ﻿@model IEnumerable<AdventurousContacts.Models.Contact>
-
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <div class="row">
-    <div class="text-center">
-        <div class="panel">
-            <div class="panel-heading">
-                <table>
+    <div class="col-md-8 col-md-offset-2">
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+
+
+                @{
+                    ViewBag.Title = "Index";
+                }
+
+                <h2>Index</h2>
+
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="col-md-offset-5">
+                <div class="btn">@Html.ActionLink("Create New", "Create")</div>
+            </div>          
+        </div>
+
+
+        <div class="panel-body">
+            <div class="well">
+                <table class="table table-striped table-condensed table-hover">
                     <tr>
                         <th>
                             @Html.DisplayNameFor(model => model.FirstName)
@@ -39,8 +49,11 @@
                                 @Html.DisplayFor(modelItem => item.EmailAddress)
                             </td>
                             <td>
+
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ContactID }) |
+
                                 @Html.ActionLink("Details", "Details", new { id = item.ContactID }) |
+
                                 @Html.ActionLink("Delete", "Delete", new { id = item.ContactID })
                             </td>
                         </tr>
@@ -50,3 +63,4 @@
         </div>
     </div>
 </div>
+

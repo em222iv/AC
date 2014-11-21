@@ -11,7 +11,6 @@ namespace AdventurousContacts.Models
     {
         public class Contact_Metadata
         {
-
             [Required]
             public int ContactID { get; set; }
             [Required]
