@@ -12,6 +12,7 @@ namespace AdventurousContacts.Models
         public class Contact_Metadata
         {
             [Required]
+            [Key]
             public int ContactID { get; set; }
             [Required]
             [MaxLength(50, ErrorMessage="No more than 50 characters")]
@@ -21,6 +22,7 @@ namespace AdventurousContacts.Models
             public string LastName { get; set; }
             [Required]
             [DataType(DataType.EmailAddress,ErrorMessage="Not a valid email format")]
+            [MaxLength(50, ErrorMessage = "No more than 50 characters")]
             public string EmailAddress { get; set; }
         }
     }

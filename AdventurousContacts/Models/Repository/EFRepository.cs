@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data;
 using System.Linq;
 using System.Web;
+
 
 namespace AdventurousContacts.Models.Repository
 {
@@ -29,23 +29,21 @@ namespace AdventurousContacts.Models.Repository
 
             public void UpdateContact(Contact contact)
             {
-                if (_entities.Entry(contact).State == EntityState.Detached)
+                if (_entities.Entry(contact).State == System.Data.Entity.EntityState.Detached)
                 {
                     _entities.Contact.Attach(contact);
                 }
 
-                _entities.Entry(contact).State = EntityState.Modified;
+                _entities.Entry(contact).State = System.Data.Entity.EntityState.Modified;
             }
 
             public void DeleteContact(Contact contact)
             {
-                if (_entities.Entry(contact).State == EntityState.Detached)
+                if (_entities.Entry(contact).State == System.Data.Entity.EntityState.Detached)
                 {
                     _entities.Contact.Attach(contact);
-
-
-                    _entities.Contact.Remove(contact);
                 }
+                _entities.Contact.Remove(contact);
             }
 
             public void Save()

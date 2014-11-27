@@ -26,10 +26,11 @@ namespace AdventurousContacts.Models
 
         public ActionResult Index()
         {
-
-           
-            //return View(_repository.GetContacts());
             return View(_repository.GetContacts().Skip(Math.Max(0, _repository.GetContacts().Count() - 20)).Take(20));
+        }
+        public ActionResult NoContact()
+        {
+            return View();
         }
 
         //
@@ -44,7 +45,7 @@ namespace AdventurousContacts.Models
         // POST: /contact/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ContactID,FirstName,LastName,EmailAddress")]Contact contact)
+        public ActionResult Create([Bind(Include = "FirstName,LastName,EmailAddress")]Contact contact)
         {
             try
             {
@@ -70,14 +71,14 @@ namespace AdventurousContacts.Models
         {
             if (!id.HasValue)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("NoContact");
             }
 
             Contact contact = _repository.GetContactsById(id.Value);
             if (contact == null)
             {
                 TempData["error"] = "Misslyckades att spara ändringarna. Försök igen, och kvarstår problemet kontakta systemadministratören.";
-                return RedirectToAction("Index");
+                return RedirectToAction("NoContact");
             }
 
             return View(contact);
@@ -92,7 +93,7 @@ namespace AdventurousContacts.Models
             if (contactToUpdate == null)
             {
                 TempData["error"] = "Misslyckades att spara ändringarna. Försök igen, och kvarstår problemet kontakta systemadministratören.";
-                return RedirectToAction("Index");
+                return RedirectToAction("NoContact");
             }
 
             if (TryUpdateModel(contactToUpdate, String.Empty, new string[] { "FirstName","LastName","EmailAddress" }))
@@ -107,7 +108,8 @@ namespace AdventurousContacts.Models
                 catch (DataException)
                 {
                     TempData["error"] = "Misslyckades att spara ändringarna. Försök igen, och kvarstår problemet kontakta systemadministratören.";
-                    return RedirectToAction("Edit", new { id = id });
+                    //return RedirectToAction("Edit", new { id = id });
+                    return RedirectToAction("NoContact");
                 }
             }
 
@@ -118,13 +120,13 @@ namespace AdventurousContacts.Models
         {
             if (!id.HasValue)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("NoContact");
             }
 
             var contact = _repository.GetContactsById(id.Value);
             if (contact == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("NoContact");
             }
 
             return View(contact);
@@ -164,14 +166,14 @@ namespace AdventurousContacts.Models
         {
             if (!id.HasValue)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("NoContact");
             }
 
             Contact contact = _repository.GetContactsById(id.Value);
             if (contact == null)
             {
                 TempData["error"] = "Kontakten finns inte.";
-                return RedirectToAction("Index");
+                return RedirectToAction("NoContact");
             }
 
             return View(contact);

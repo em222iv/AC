@@ -11,10 +11,16 @@ namespace AdventurousContacts.Controllers
         //
         // GET: /Error/
 
+
         public ActionResult Error()
         {
-            return View("Error");
+            return View();
         }
+        public ActionResult Error404()
+        {
+            return View();
+        }
+    
 
     }
 }
